@@ -99,7 +99,7 @@ void showperson(book*booka) {
 	system("cls");
 }
 //检测联系人
-int exit(book* booka, string name)
+int exist(book* booka, string name)
 {
 	for (int i = 0; i < booka->size; i++)
 	{
@@ -107,11 +107,8 @@ int exit(book* booka, string name)
 		{
 			return i;
 		}
-		else
-		{
-			return -1;
-		}
 	}
+	return -1;
 }
 //删除联系人
 void deleteperson(book* booka)
@@ -119,7 +116,7 @@ void deleteperson(book* booka)
 	cout << "请输入需删除的联系人" << endl;
 	string name;
 	cin >> name;
-	int ret = exit(booka, name);
+	int ret = exist(booka, name);
 	if (ret!=-1)
 	{
 		for (int i = ret; i < booka->size; i++)
@@ -127,10 +124,123 @@ void deleteperson(book* booka)
 			booka->personarray[i] = booka->personarray[i + 1];
 			booka->size--;
 		}
+		cout << "删除成功" << endl;
 	}
 	else
 	{
 		cout << "无该联系人" << endl;
+	}
+	system("pause");
+	system("cls");
+}
+//查找联系人
+void findperson(book* booka)
+{
+	cout << "输入姓名" << endl;
+	string name;
+	cin >> name;
+	int i=exist(booka, name);
+	if (int (exist(booka,name))==-1)
+	{
+		cout << "未找到该联系人" << endl;
+	}
+	else
+	{
+		cout << "姓名：" << booka->personarray[i].name << "\t";
+		cout << "性别：" << (booka->personarray[i].sex == 1 ? "男" : "女") << "\t";
+		cout << "年龄：" << booka->personarray[i].age << "\t";
+		cout << "电话：" << booka->personarray[i].phone << endl;
+
+	}
+	system("pause");
+	system("cls");
+}
+//修改联系人
+void modifyperson(book* booka)
+{
+	cout << "输入姓名" << endl;
+	string name;
+	cin >> name;
+	if (int (exist(booka,name) )== -1)
+	{
+		cout << "未找到该联系人" << endl;
+	}
+	else
+	{
+		cout << "请输入新的信息" << endl;
+		int i = exist(booka, name);
+		string name;
+		cout << "输入姓名" << endl;
+		cin >> name;
+		booka->personarray[i].name = name;
+		int sex = 0;
+		cout << "输入性别 1、男 2、女" << endl;
+		while (true)
+		{
+			cin >> sex;
+			if (sex == 1 || sex == 2)
+			{
+				booka->personarray[i].sex = sex;
+				break;
+			}
+			else
+			{
+				cout << "输入错误,请重新输入" << endl;
+			}
+		}
+		int age = 0;
+		cout << "输入年龄" << endl;
+		cin >> age;
+		booka->personarray[i].age = age;
+		cout << "输入电话号码" << endl;
+		string number;
+		while (true)
+		{
+			cin >> number;
+			int len = number.length();
+			if (len == 11)
+			{
+				booka->personarray[i].phone = number;
+				break;
+			}
+			else
+			{
+				cout << "输入错误，请重新输入" << endl;
+			}
+		}
+		cout << "添加成功" << endl;
+	}
+	system("pause");
+	system("cls");
+}
+//清空联系人
+void clearperson(book* booka)
+{
+	cout << "是否清空 1、清空 2、不清空" << endl;
+	int choose = 0;
+	cin >> choose;
+	while (true)
+	{
+		if (choose == 2)
+		{
+			system("cls");
+			break;
+		}
+		else if (choose == 1)
+		{
+			booka->size = 0;
+			cout << "通讯录已清空" << endl;
+			system("pause");
+			system("cls");
+			break;
+		}
+		else
+		{
+			cout << "输入错误" << endl;
+			system("pause");
+			system("cls");
+			break;
+		}
 	}
 }
 //选择功能
@@ -148,14 +258,16 @@ int functionchoose(int select,book* booka)
 		deleteperson(booka);
 		break;
 	case 4:
+		findperson(booka);
 		break;
 	case 5:
+		modifyperson(booka);
 		break;
 	case 6:
+		clearperson(booka);
 		break;
 	case 0:
 		cout << "欢迎下次使用" << endl;
-		system("pause");
 		return 0;
 		break;
 	default:
@@ -172,6 +284,7 @@ int main()
 		showmenu();
 		cin >> select;
 		functionchoose(select, &booka);
+		if (select == 0) break;
 	}
 	system("pause");
 	return 0;
