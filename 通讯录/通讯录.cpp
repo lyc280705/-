@@ -271,7 +271,7 @@ int functionchoose(int select,book* booka)
 		return 0;
 		break;
 	default:
-		cout << "ÊäÈë´íÎó" << endl;
+		cout << "ÊäÈëÓÐÎó" << endl;
 	}
 }
 int main()
